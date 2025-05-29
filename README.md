@@ -12,49 +12,52 @@ Este projeto foi desenvolvido como parte de um desafio do bootcamp de Análise d
 
 ## 🧱 Entidades e Atributos
 
-- **Cliente**: Nome/Razão Social, CPF/CNPJ, Telefone, Endereço
-- **Veículo**: Revisão Periódica, Troca de Peças, Consertos
-- **ClienteVeiculo**: Relacionamento N:M entre cliente e veículo
-- **EquipeMecanica**: Nome, Código Identificador, Endereço, Especialidade
-- **OrdemServico**: ID, Status, Serviço Prestado, Peças utilizadas, Veículo, Equipe
-- **Serviço**: Tipo, Valor, Quantidade, Datas, Autorização do cliente
-- **Peça**: Tipo, Valor, Quantidade, Datas, Autorização do cliente
-- **Pagamento**: Data, Forma, Valor, Status, Nota fiscal
+- **cliente**: nome/razão social, CPF/CNPJ, telefone, endereço
+- **veiculo**: informações sobre revisões, trocas de peças e consertos
+- **cliente_veiculo**: relacionamento N:M entre cliente e veículo com tipo de vínculo
+- **ordemServico**: número, status_ordem ENUM('pendente', 'em_execucao', 'concluida', 'cancelada'), vínculo com cliente, veículo, equipe, pagamento
+- **servico**: tipo, valor da mão de obra, quantidade, autorização do cliente (`autorizacao_cliente` como `TINYINT`)
+- **peca**: tipo, valor, quantidade, autorização do cliente
+- **equipeMecanica**: código, nome, endereço, especialidade
+- **pagamento**: data, forma, valor, status_pagamento ENUM('aguardando', 'confirmado', 'recusado', 'estornado'), nota fiscal
 
 ---
 
 ## 🔁 Relacionamentos
 
-- Cliente possui um ou mais veículos (via ClienteVeiculo)
-- Veículo pode ter várias ordens de serviço
-- Cada ordem é executada por uma equipe
-- Cada ordem possui serviços, peças e pagamento
+- Um cliente pode ter um ou mais veículos (via `cliente_veiculo`)
+- Um veículo pode gerar várias ordens de serviço
+- Cada ordem é associada a uma equipe de mecânicos
+- Cada ordem está relacionada a um conjunto de serviços, peças e um pagamento
 
 ---
 
 ## 💡 Justificativa de Modelagem
 
-A modelagem foi baseada na narrativa do sistema de ordens de serviço de uma oficina, priorizando clareza, normalização e representação fiel do contexto real.
+- Os nomes foram padronizados sem espaços ou acentos para garantir compatibilidade com SQL.
+- cliente_veiculo permite representar vínculos como copropriedade ou uso empresarial.
+- Atributos de controle como status_ordem e status_pagamento usam `ENUM` para garantir integridade semântica.
+- Atributos booleanos, como autorizacao_cliente, usam `TINYINT(1)`, conforme o padrão do MySQL.
+- A estrutura garante rastreabilidade, normalização e preparo para uso futuro em BI ou sistemas relacionais.
 
-- **Cliente** unifica pessoa física e jurídica, evitando duplicidade de entidades.  
-- **ClienteVeiculo** permite relacionamentos N:M entre clientes e veículos.  
-- **Ordem de Serviço** centraliza as informações de execução, vinculando veículo, equipe, serviços, peças e pagamento.  
-- **Serviço** e **Peça** foram separados para controle individual de custos.  
-- **Pagamento** registra dados completos (data, forma, valor e status), garantindo rastreabilidade.  
+---
 
-Essa estrutura facilita consultas, relatórios e futura implementação do sistema em um banco relacional.
+## 📁 Estrutura de Arquivos
+
+- `Modelagem Conceitual Mecancia.png`: Imagem do diagrama ER
+- `relatorio_modelagem_oficina.pdf`: Relatório com análise e justificativas
 
 ---
 
 ## 👩‍💻 Autora
 
-Paloma Beker  
+**Paloma Beker**  
 Estudante de Ciência de Dados | Bootcamp de Análise de Dados  
 [LinkedIn](https://www.linkedin.com/in/paloma-beker)
 
 ---
 
-## 📎 Arquivos
+## ✅ Conclusão
 
-- `Modelagem Conceitual Mecancia.png`: Diagrama ER do projeto
-- `Relatorio Modelagem Oficina Mecanica.pdf`: Documento com análise e justificativas
+Este projeto apresenta uma modelagem robusta e prática de um sistema de ordens de serviço para oficinas mecânicas. A modelagem pode ser implementada em um SGBD relacional, com potencial para futuras análises de dados.
+
